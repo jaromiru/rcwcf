@@ -1,4 +1,4 @@
-This is the code used to create results for paper *Cost-Efficient Hierarchical Knowledge Extraction with Deep RL* (https://arxiv.org/abs/1911.08756). 
+This is the code used to create results for paper *Cost-Efficient Hierarchical Knowledge Extraction with Deep Reinforcement Learning* (https://arxiv.org/abs/1911.08756). 
 
 Directory structured as follows:
 - `code`: contains the code and datasets

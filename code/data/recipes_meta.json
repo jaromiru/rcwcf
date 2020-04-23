@@ -1,0 +1,25 @@
+{
+	"name": "ingredients",
+	"classes": 20,
+	"samples": 39774,
+	"val_samples": 5000,
+	"test_samples": 5000,
+	"depth": 2,
+
+	"label": "y",
+
+	"description": {
+		"y": {
+			"type": "label"
+		},
+		"f0": {
+			"type": "bag",
+			"cost": 0,
+
+			"igd": {
+				"type": "str2trigram",
+				"cost": 1.0
+			}
+		}
+	}
+}

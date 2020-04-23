@@ -1,0 +1,102 @@
+{
+	"name": "web_small",
+	"classes": 2,
+	"val_samples": 200,
+	"test_samples": 200,
+	"samples": 1171,
+	"depth": 3,
+
+	"label": "label",
+
+	"description": {
+		"label": {
+			"type": "label_svm"
+		},
+
+		"domain": {
+			"type": "str2trigram",
+			"cost": 0
+		},
+		"ips": {
+			"type": "bag",
+			"cost": 1.0,
+
+			"ip": {
+				"type": "ip2bin",
+				"cost": 0
+			},
+			"domains": {
+				"type": "bag",
+				"cost": 1.0,
+
+				"domain": {
+					"type": "str2trigram",
+					"cost": 0
+				}
+			},
+			"hashes": {
+				"type": "skip",
+				"cost": 1.0,
+
+				"hash": {
+					"type": "?",
+					"cost": 0
+				}
+			}
+		},
+		"emails": {
+			"type": "bag",
+			"cost": 1.0,
+
+			"email": {
+				"type": "str2trigram",
+				"cost": 0
+			},
+			"domains": {
+				"type": "bag",
+				"cost": 1.0,
+
+				"domain": {
+					"type": "str2trigram",
+					"cost": 0
+				}
+			}
+		},
+		"hashes": {
+			"type": "bag",
+			"cost": 1.0,
+
+			"hash": {
+				"type": "skip",
+				"cost": 0
+			},
+			"scans": {
+				"type": "bag",
+				"cost": 1.0,
+
+				"scan": {
+					"type": "str2trigram",
+					"cost": 0
+				}
+			},
+			"domains": {
+				"type": "bag",
+				"cost": 1.0,
+
+				"domain": {
+					"type": "str2trigram",
+					"cost": 0
+				}
+			},
+			"ips": {
+				"type": "bag",
+				"cost": 1.0,
+
+				"ip": {
+					"type": "ip2bin",
+					"cost": 0
+				}
+			}
+		}
+	}
+}

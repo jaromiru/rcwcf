@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CwCF Tree Visualization</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div id="header">
+        <h1>Dataset: {{dataset_name}}</h1>
+      </div>
+  
+      Select sample:
+      <div class="slidecontainer">
+        <input type="range" min="0" v-bind:max="this.data.length-1" v-model:value="sample_id" class="slider" id="sampleSelector" v-on:change="selectSample">
+        {{sample_id}}/{{this.data.length-1}}
+      </div>
+
+      Select step:
+      <div class="slidecontainer">
+        <input type="range" min="0" v-bind:max="this.current_sample.length-1" v-model:value="step_id" class="slider" id="stepSelector" v-on:change="selectStep">
+        {{step_id}}/{{this.current_sample.length-1}}
+        <input type="button" value="Next step" v-on:click="nextStep">
+
+      </div>
+
+
+      <input type="button" value="Save SVG" onclick="saveSVG()">
+      <input type="button" value="Save whole sample" v-on:click="saveSample()">
+      <input type="button" value="Close All" onclick="closeAll()">
+      <input type="button" value="Open Level" onclick="openAll()">
+
+       <p>Class probs: {{current_item.cls_probs | to2digit}}</p>
+       <p>State value: {{current_item.s_value | to2digit}}</p>
+
+    </div>
+
+    <svg id="viz" width="1500px" height="800px" font-family="lato" font-size="11"></svg>
+
+    <!-- <script src="data_web_100k.js"></script> -->
+    <!-- <script src="data_carc.js"></script> -->
+    <!-- <script src="data_hepa.js"></script> -->
+    <!-- <script src="data_muta.js"></script> -->
+    <!-- <script src="data_recipes.js"></script> -->
+    <!-- <script src="data_sap_balanced.js"></script> -->
+    <script src="data_stats_full.js"></script>
+
+    <script src="chart.js"></script>
+    <script src="bar_chart.js"></script>
+    <script src="value_bar.js"></script>
+    <script src="tools.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

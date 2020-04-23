@@ -1,0 +1,110 @@
+{
+	"name": "stats",
+	"classes": 3,
+	"val_samples": 2000,
+	"test_samples": 2000,
+	"samples": 8318,
+	"depth": 3,
+
+	"label": "age",
+
+	"description": {
+		"age": {
+			"type": "label"
+		},
+		"views" : {
+			"type": "float",
+			"cost": 0.5
+		},
+		"reputation" : {
+			"type": "float",
+			"cost": 0.5
+		},
+		"profile_img" : {
+			"type": "float",
+			"cost": 0.5
+		},
+		"up_votes" : {
+			"type": "float",
+			"cost": 0.5
+		},
+		"down_votes" : {
+			"type": "float",
+			"cost": 0.5
+		},
+		"website" : {
+			"type": "float",
+			"cost": 0.5
+		},
+		"about_me": {
+			"type": "float_array_13",
+			"cost": 1.0
+		},
+
+		"badges": {
+			"type": "bag",
+			"cost": 1.0,
+
+			"badge": {
+				"type": "float_array_13",
+				"cost": 0.1
+			}
+		},
+
+		"posts": {
+			"type": "bag",
+			"cost": 1.0,
+
+			"title": {
+				"type": "float_array_13",
+				"cost": 0.2
+			},
+			"body": {
+				"type": "float_array_13",
+				"cost": 0.5
+			},
+
+			"score": {
+				"type": "float",
+				"cost": 0.1
+			},
+			"views": {
+				"type": "float",
+				"cost": 0.1
+			},
+			"answers": {
+				"type": "float",
+				"cost": 0.1
+			},
+			"favorites": {
+				"type": "float",
+				"cost": 0.1
+			},
+
+			"tags":{
+				"type": "bag",
+				"cost": 0.5,
+
+				"tag": {
+					"type": "float_array_13",
+					"cost": 0.1
+				}
+			},
+
+			"comments":{
+				"type": "bag",
+				"cost": 0.5,
+
+				"score": {
+					"type": "float",
+					"cost": 0.1
+				},
+				"text": {
+					"type": "float_array_13",
+					"cost": 0.2
+				}
+			}
+
+		}
+	}
+}

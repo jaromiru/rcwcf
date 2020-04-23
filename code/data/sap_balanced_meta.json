@@ -1,0 +1,87 @@
+{
+	"name": "sap",
+	"classes": 2,
+	"val_samples": 10000,
+	"test_samples": 10000,
+	"samples": 35602,
+	"depth": 2,
+
+	"label": "y",
+
+	"description": {
+		"y": {
+			"type": "label"
+		},
+		"sex": {
+			"type": "float",
+			"cost": 1.0
+		},
+		"marital_status": {
+			"type": "category",
+			"values": ["Widowed", "Divorced", "Never-married", "Other", "Married-civ-spouse"],
+			"cost": 1.0
+		},
+		"educationnum": {
+			"type": "category",
+			"values": [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16],
+			"cost": 1.0
+		},
+		"occupation": {
+			"type": "category",
+			"values": ["Adm-clerical", "Exec-managerial", "Farming-fishing", "Other-service", "Handlers-cleaners", "Machine-op-inspct", "Prof-specialty", "Sales", "Craft-repair"],
+			"cost": 1.0
+		},
+		"data1": {
+			"type": "float",
+			"cost": 1.0
+		},
+		"data2": {
+			"type": "float",
+			"cost": 1.0
+		},
+		"data3": {
+			"type": "float",
+			"cost": 1.0
+		},
+		"nom1": {
+			"type": "category",
+			"values": ["t", "x", "e", "fb", "b", "w", "p", "i", "d", "ab", "g", "z", "cb", "hb", "`", "ib", "y", "r", "q", "lb", "o", "c", "h", "bb", "k", "gb", "l", "n", "m", "eb", "v", "_", "jb", "db", "u", "f", "s", "kb", "j", "-"],
+			"cost": 1.0
+		},
+		"nom2": {
+			"type": "category",
+			"values": ["h", "m", "j", "v", "i", "k", "r", "g", "w", "o", "p", "l", "x", "e", "t", "u", "q", "s", "n"],
+			"cost": 1.0
+		},
+		"nom3": {
+			"type": "category",
+			"values": ["j", "o", "e", "c", "v", "cb", "ib", "mb", "fb", "m", "g", "jb", "l", "hb", "ob", "s", "r", "ab", "z", "db", "p", "k", "lb", "pb", "gb", "nb", "q", "d", "b", "x", "h", "bb", "y", "kb", "f", "i", "t", "n", "u", "w", "eb"],
+			"cost": 1.0
+		},
+		"age": {
+			"type": "float",
+			"cost": 1.0
+		},
+		"geo_inhabitants": {
+			"type": "float",
+			"cost": 1.0
+		},
+		"geo_income": {
+			"type": "float",
+			"cost": 1.0
+		},
+		"sales": {
+			"type": "bag",
+			"cost": 1.0,
+
+			"date": {
+				"type": "float",
+				"cost": 0.1
+			},
+			"amount":{
+				"type": "float",
+				"cost": 0.1
+			}
+		}
+	}
+}

@@ -1,0 +1,103 @@
+{
+	"name": "hepatitis",
+	"samples": 500,
+	"val_samples": 100,
+	"test_samples": 100,
+	"classes": 2,
+	"class_occurrence": "?",
+	"depth": 2,
+
+	"label": "y",
+
+	"description": {
+		"sex": {
+			"type": "binary",
+			"cost": 0
+		},
+		"age":  {
+			"type": "category",
+			"values": ["0", "1", "2", "3", "4", "5", "6"],
+			"cost": 0
+		},
+		"y":  {
+			"type": "label"
+		},
+		"bio":	{
+		  	"type": "bag",
+		  	"cost": 0.0,
+
+		    "fibros": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3", "4"],
+		    	"cost": 1.0
+		    },
+		    "activity": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3", "4"],
+		    	"cost": 1.0
+		    }
+	  	},
+		"indis":  {
+		  	"type": "bag",
+		  	"cost": 0.0,
+
+		    "got": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3", "4"],
+		    	"cost": 1.0
+		    },
+		    "gpt": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3"],
+		    	"cost": 1.0
+		    },
+		    "alb": {
+		    	"type": "binary",
+		    	"cost": 1.0
+		    },
+		    "tbil": {
+		    	"type": "binary",
+		    	"cost": 1.0
+		    },
+		    "dbil": {
+		    	"type": "binary",
+		    	"cost": 1.0
+		    },
+		    "che": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+		    	"cost": 1.0
+		    },
+		    "ttt": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3", "4", "5"],
+		    	"cost": 1.0
+		    },
+		    "ztt": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3", "4", "5"],
+		    	"cost": 1.0
+		    },
+		    "tcho": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3"],
+		    	"cost": 1.0
+		    },
+		    "tp": {
+		    	"type": "category",
+		    	"values": ["0", "1", "2", "3"],
+		    	"cost": 1.0
+		    }
+	  	},
+	  	"inf":	{
+	  		"type": "bag",
+	  		"cost": 0.0,
+
+	  	    "dur": {
+	  	    	"type": "category",
+	  	    	"values": ["0", "1", "2", "3", "4"],
+	  	    	"cost": 1.0
+	  	    }
+	  	}
+	}
+}

@@ -1,0 +1,35 @@
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 15px sans-serif;
+  font-weight: bold;
+}
+
+.link {
+  fill: none;
+  /*stroke: steelblue;*/
+  opacity: 0.8;
+  /*stroke-width: 1.5px;*/
+}
+
+#levels{
+  margin-left: 120px;
+}
+
+div#viz{
+  background: #fff;
+}
+
+body{
+  background: #fff;
+}
+
+/*svg { font: 10px lato; }*/

@@ -18,12 +18,19 @@ parser.add_argument('-seed', type=int, default=None, help="random seed")
 parser.add_argument('-dataseed', type=int, default=1234, help="seed to shuffle data")
 
 parser.add_argument('-model', type=str, default='run.mdl', help="load model from this file")
+parser.add_argument('-emb_size', type=int, default=128, help="batch size")
 
 args = parser.parse_args()
 args.batch = 1
 args.epochs = 0
 args.eplen = 0
 args.log = 0
+args.lr = 0
+args.l2 = 0
+args.sample_cls = None
+args.alpha_cls = 0
+args.alpha_h = 0
+args.alpha_h_min = 0
 
 config.init(args)
 
@@ -183,6 +190,7 @@ with torch.no_grad():
 
 	while True:
 		orig_id = shuffle_idx[env.idx-1]
+		# orig_id = shuffle_idx[config.TEST_SAMPLES+config.VAL_SAMPLES+env.idx-1] # for train set
 		# print("--------------")
 		print(f"Data idx: {env.idx}, orig: {orig_id}, step: {step}")
 
@@ -231,4 +239,5 @@ with torch.no_grad():
 		step_obj = json.dumps(all_samples)
 
 		print(f"dataset_name='{args.dataset}'", file=file)
+		print(f"class_labels={meta_full['class_labels']}", file=file)
 		print(f"data={step_obj}", file=file)

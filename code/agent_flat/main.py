@@ -27,7 +27,7 @@ parser.add_argument('target', type=float, help="target lambda")
 parser.add_argument('-device', type=str, choices=['auto', 'cpu', 'cuda'], default='cpu', help="Which device to use")
 parser.add_argument('-ncpus', type=int, default=2, help="How many CPUs to use")
 parser.add_argument('-seed', type=int, default=None, help="random seed")
-parser.add_argument('-dataseed', type=int, default=1234, help="seed to shuffle data; 0 means no shuffle")
+parser.add_argument('-dataseed', type=int, default=1234, help="seed to shuffle data")
 
 parser.add_argument('-epochs', type=int, default=100000, help="max train epochs")
 parser.add_argument('-eplen', type=int, default=1000, help="steps per epoch")
@@ -43,11 +43,9 @@ parser.add_argument('-lr', type=float, default=1.0e-3, help="initial learning ra
 parser.add_argument('-alpha_h', type=float, default=0.05, help="initial entropy weight")
 parser.add_argument('-alpha_h_min', type=float, default=0.0025, help="initial entropy weight")
 parser.add_argument('-batch', type=int, default=256, help="batch size")
-parser.add_argument('-emb_size', type=int, default=128, help="batch size")
 
 parser.add_argument('-alpha_cls', type=float, default=1.0, help="class weighting")
 parser.add_argument('-sample_cls', action='store_const', const=True, help="sample classification loss")
-
 parser.add_argument('-l2', type=float, default=1.0e-4, help="weight decay")
 
 cmd_args = parser.parse_args()
@@ -64,7 +62,7 @@ if config.SEED:
 # set ncpus
 torch.set_num_threads(cmd_args.ncpus)	
 
-wandb.init(project="rcwcf", name=f'{cmd_args.dataset} {cmd_args.target}', config=config)
+wandb.init(project="rcwcf-flat", name=f'{cmd_args.dataset} {cmd_args.target}', config=config)
 wandb.save("*.pt")
 wandb.save("*.log")
 

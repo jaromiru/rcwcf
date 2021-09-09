@@ -111,7 +111,7 @@ openAll = function(){
 }
 
 vizNode = d3.select("#viz")
-function update_viz(item){
+function update_viz(item, step_id){
   ret = chart(item.sample, accessor_f);
 
   svg = ret[0]
@@ -122,11 +122,15 @@ function update_viz(item){
   vizNode.selectAll("text").remove()
 
   vizNode.append(() => svg)
-  vizNode.append(() => bar_chart(item.cls_probs, item.true_y))
+  vizNode.append(() => bar_chart(item.cls_probs, item.true_y, class_labels))
   vizNode.append(() => val_bar(item.s_value))
   vizNode.append('text')
     .attr("transform", `translate(20 , 405)`)
     .text(`total cost: ${item.total_cost.toFixed(1)}`);
+  // vizNode.append('text')
+  //   .attr("transform", `translate(15, 331)`)
+  //   .attr("font-style", "italic")
+  //   .text(`step ${step_id}`);
 
   // console.log(item)
 }
@@ -150,7 +154,7 @@ var app = new Vue({
     },
     selectStep: function(){
         this.current_item = this.current_sample[this.step_id]
-        update_viz(this.current_item)
+        update_viz(this.current_item, this.step_id)
     },
     nextStep: function(){
       this.step_id = Math.min(this.step_id + 1, this.current_sample.length - 1)

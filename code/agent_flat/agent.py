@@ -29,6 +29,7 @@ class Agent():
 
 			for l in range(config.DATA_DEPTH):
 				p = torch.softmax(it.p.flatten(), dim=0)
+				print(f'{p=}')
 
 				if self.greedy:
 					a = torch.argmax(p, 0, keepdim=True).item()
@@ -65,12 +66,18 @@ class Agent():
 	def step(self):
 		s = self.s
 
-		# print(f"{s=}")
-		# input()
+		# print(f'{s=}')
+
 		a, net_res = self.act(s)
 		s_, r, y, flag, info = self.env.step(a)
 
 		self.s = s_
+
+		# print(f'{a=}')
+		# print(f'{s_=}')
+		# print(f'{r=}')
+		# print(f'{y=}')
+		# input() 
 
 		# the state s is overwritten in-place!
 		return (None, a, r, s_, y, net_res, flag, info)

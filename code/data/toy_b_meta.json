@@ -1,0 +1,57 @@
+{
+	"name": "toy_b",
+	"classes": 2,
+	"val_samples": 4,
+	"test_samples": 4,
+	"samples": 12,
+	"class_labels": ["pos", "neg"],
+	"depth": 2,
+
+	"label": "label",
+
+	"description": {
+		"label": {
+			"type": "label"
+		},
+
+		"which_set": {
+			"type": "category",
+			"values": ["a", "b"],
+			"cost": 1.0
+		},
+
+		"set_a": {
+			"type": "bag",
+			"cost": 5.0,
+
+			"item_key": {
+				"type": "category",
+				"values": [0, 1],
+				"cost": 0.0
+			},
+
+			"item_value": {
+				"type": "category",
+				"values": [0, 1],
+				"cost": 1.0
+			}
+		},
+
+		"set_b": {
+			"type": "bag",
+			"cost": 5.0,
+
+			"item_key": {
+				"type": "category",
+				"values": [0, 1],
+				"cost": 0.0
+			},
+
+			"item_value": {
+				"type": "category",
+				"values": [0, 1],
+				"cost": 1.0
+			}
+		}
+	}
+}

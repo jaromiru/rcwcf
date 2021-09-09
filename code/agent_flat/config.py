@@ -10,32 +10,39 @@ class Object:
 		self.MODEL_FILE = args.model
 
 		#================== rl
-		self.BUDGET = args.budget
+		self.LAMBDA = args.target
 		self.REWARD_CORRECT   = 1.
 		self.REWARD_INCORRECT = 0.
 		
-		self.GAMMA  = 1.0
+		self.GAMMA  = 0.99
 		
+		#================== network
+		self.BAG_SIZE = 128
+
+		self.OPT_LR = args.lr
+		self.OPT_LR_MIN = self.OPT_LR / 30
+
+		self.OPT_L2 = args.l2
+		self.OPT_MAX_NORM = 1.0
+		self.OPT_LR_FACTOR = 0.5
+		self.OPT_H_FACTOR = 1.0
+
 		#================== training
 		self.AGENTS = args.batch
 		self.TRAINING_EPOCHS = args.epochs
 		self.EPOCH_STEPS = args.eplen
 		
+		self.SAMPLE_CLS = args.sample_cls
+		self.ALPHA_CLS = args.alpha_cls
 		self.W_PI = 1.0
 		self.W_V  = 0.5 
-		self.W_H  = 0.05
+		self.W_H  = args.alpha_h
 		self.W_CLS = 1.0
 
-		#================== network
-		self.BAG_SIZE = 128
-
-		self.OPT_LR = 3.0e-3
-		self.OPT_L2 = args.l2
-		self.OPT_MAX_NORM = 0.1
-		self.OPT_LR_FACTOR = 0.5
 		self.LR_SCHEDULE = self.EPOCH_STEPS * 10
-		self.OPT_LR_MIN = self.OPT_LR / 30
-
+		self.H_SCHEDULE = self.EPOCH_STEPS
+		self.H_MIN = args.alpha_h_min
+		
 		#================== log
 		self.LOG_FILE = args.log
 

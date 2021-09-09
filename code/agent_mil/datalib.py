@@ -54,8 +54,11 @@ def ip2bin(prop):
 # TODO: for string of length < 3 it returns all zeros
 HIST_SIZE = 13
 def to_trigram_hist(string):
-	# print(string, print(string.encode())
+	# print(string, string.encode())
 	hist = [0] * HIST_SIZE
+
+	if string is None: 
+		return hist
 
 	string = string.encode()
 	for s in range(0, len(string) - 2):
@@ -269,7 +272,8 @@ def load_data(data_file, meta_file):
 	return data_processed, meta_processed, meta
 
 def split(data, data_seed):
-	random.shuffle(data, random.Random(data_seed).random)
+	if data_seed != 0:
+		random.shuffle(data, random.Random(data_seed).random)
 
 	data_tst = data[:config.TEST_SAMPLES]
 	data_val = data[config.TEST_SAMPLES:config.TEST_SAMPLES+config.VAL_SAMPLES]

@@ -168,10 +168,10 @@ function chart(data, accessor_f) {
           const o = {x: source.x0, y: source.y0};
           return diagonal({source: o, target: o});
         })
-        .attr("stroke-width", d => d.target.data.prob == 0 ? .5 : d.target.data.prob * 10)
+        .attr("stroke-width", d => d.target.data.prob == 0 ? .5 : Math.max(d.target.data.prob * 10, .5))
         // .attr("stroke-opacity", d => d.target.data.prob == 0 ? 1.0 : 0.4)
         // .attr("stroke-dasharray", d => d.target.data.prob == 0 ? 4 : 0)
-        .attr("stroke-dasharray", d => d.target.data.prob == 0 ? 4 : 0)
+        .attr("stroke-dasharray", d => !d.target.data.prob ? 4 : 0)
         .attr("stroke", d => d.target.data.selected ? SELECTED_COLOR : "#000")
 
 

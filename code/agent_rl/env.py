@@ -77,7 +77,7 @@ class ItemMask:
 
 #==============================
 class RandomItemMask:
-	def __init__(self, item, meta, rand_r):
+	def __init__(self, item, meta, rand_r): # TODO always include free features
 		self.orig_item = item
 
 		self.feats 		= torch.zeros_like(item.feats)
@@ -163,21 +163,15 @@ class SeqEnv(Env):
 		super().__init__(data, meta)
 
 	def reset(self, smp_idx=0):
-		if len(self.data) < config.AGENTS:
-			self.x = []
-			self.x_ = []
-			self.idx = smp_idx
+		self.x = []
+		self.x_ = []
+		self.idx = smp_idx
 
-			for i in range(config.AGENTS):
-				x, x_ = self._generate_sample()
+		for i in range(config.AGENTS):
+			x, x_ = self._generate_sample()
 
-				self.x.append(x)
-				self.x_.append(x_)
-
-		else:
-			self.x = self.data[:config.AGENTS]	
-			self.x_ = [ItemMask(it, self.meta) for it in self.x]
-			self.idx = config.AGENTS
+			self.x.append(x)
+			self.x_.append(x_)
 
 		return self.x_	# correct would be copy.deepcopy()!
 

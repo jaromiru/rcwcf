@@ -269,14 +269,17 @@ def load_data(data_file, meta_file):
 	return data_processed, meta_processed, meta
 
 def split(data, data_seed):
+	shuffle_idx = np.arange(len(data))
+	
 	if data_seed != 0:
-		random.shuffle(data, random.Random(data_seed).random)
+		random.shuffle(shuffle_idx, random.Random(data_seed).random)
+		data = np.array(data)[shuffle_idx]
 
 	data_tst = data[:config.TEST_SAMPLES]
 	data_val = data[config.TEST_SAMPLES:config.TEST_SAMPLES+config.VAL_SAMPLES]
 	data_trn = data[config.TEST_SAMPLES+config.VAL_SAMPLES:]
 
-	return data_trn, data_val, data_tst
+	return data_trn, data_val, data_tst, shuffle_idx
 
 
 # def load_data(data_file, meta_file, force=False):

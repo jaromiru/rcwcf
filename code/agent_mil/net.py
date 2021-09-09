@@ -3,6 +3,7 @@ from config import *
 import numpy as np
 
 import torch
+from torch.nn import LeakyReLU, LayerNorm
 import torch.nn.functional as F
 from torch.autograd import Variable
 
@@ -52,6 +53,19 @@ def seg_mean_seq(x, x_len):
 
 	return x_agg
 
+#==============================
+def seg_max_seq(x, x_len):
+	tot_len = len(x_len)
+
+	x = torch.split(x, x_len)
+	x_agg = torch.zeros((tot_len, config.BAG_SIZE), device=config.DEVICE)
+	for idx in range(tot_len):
+		if x[idx].shape[0] != 0: 
+			x_agg[idx] = torch.max(x[idx], dim=0)
+
+	return x_agg
+
+#==============================
 class CustomBatchNorm(torch.nn.BatchNorm1d):
 	def forward(self, x):
 		if len(x) > 1:
@@ -73,7 +87,7 @@ class BagInput(torch.nn.Module):
 		feat_len = meta.feat_idx[-1][1]
 
 		self.f = torch.nn.Linear(feat_len, config.BAG_SIZE) 
-		self.norm = CustomBatchNorm(config.BAG_SIZE)
+		self.norm = LayerNorm(config.BAG_SIZE)
 
 		self.act_f = act_f
 		self.agg_f = agg_f
@@ -82,7 +96,7 @@ class BagInput(torch.nn.Module):
 
 		self.sub_bags = []
 		for fid, bag in meta.bags:
-			module = BagInput(bag, F.relu, seg_mean_vec)
+			module = BagInput(bag, act_f, seg_mean_vec)
 			self.sub_bags.append(module)
 			self.add_module(f"bag_{fid}", module)
 
@@ -114,10 +128,10 @@ class Net(torch.nn.Module):
 	def __init__(self, meta):
 		super().__init__()
 
-		self.model_in  = BagInput(meta, F.relu, None)
+		self.model_in  = BagInput(meta, LeakyReLU(), None)
 		self.model_cls_p = torch.nn.Linear(config.BAG_SIZE, config.CLASSES)		# classifying actions
 
-		self.opt = torch.optim.Adam(self.parameters(), lr=config.OPT_LR, weight_decay=config.OPT_L2)
+		self.opt = torch.optim.AdamW(self.parameters(), lr=config.OPT_LR, weight_decay=config.OPT_L2)
 		self.loss = torch.nn.CrossEntropyLoss()
 
 	def forward(self, batch):

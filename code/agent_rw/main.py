@@ -1,5 +1,5 @@
 import numpy as np
-import json, torch, random, argparse, sys
+import json, torch, random, argparse, sys, wandb
 
 from env import Env
 from net import Net
@@ -33,6 +33,7 @@ parser.add_argument('-log', type=str, default='run.log', help="log raw results t
 parser.add_argument('-model', type=str, default='run.mdl', help="save model to this file")
 
 parser.add_argument('-load', action='store_const', const=True, help="load progress")
+parser.add_argument('-l2', type=float, default=1.0e-4, help="weight decay")
 
 args = parser.parse_args()
 
@@ -64,15 +65,26 @@ log_tst = Log(data_tst, net, meta)
 
 print(net)
 
+wandb.init(project="rcwcf-rw", name=f'{args.dataset} {args.budget}', config=config)
+
 fps = utils.Fps()
 fps.start()
 
+def decay_exp(step, start, min, factor, rate):
+	exp = step / rate
+	value = (start - min) * (factor ** exp) + min
+
+	return value
+
 def set_lr(ep_steps):
-	ep = ep_steps // (config.EPOCH_STEPS * 10)
-	lr = config.OPT_LR * (config.OPT_LR_FACTOR ** ep)
+	lr = decay_exp(ep_steps, config.OPT_LR, config.OPT_LR_MIN, config.OPT_LR_FACTOR, config.LR_SCHEDULE)
+	# ep = ep_steps // (config.EPOCH_STEPS * 10)
+	# lr = config.OPT_LR * (config.OPT_LR_FACTOR ** ep)
 	
 	net.set_lr(lr)
 	print(f"LR: {lr:.2e}")
+
+	return lr
 
 if config.LOG_FILE:
 	if args.load:		
@@ -86,8 +98,27 @@ finished_s = []
 finished_y = []
 finished_cnt = 0
 
+lr = config.OPT_LR
+
 print("\nTraining...")
 for ep_steps in range(1, config.TRAINING_EPOCHS):
+	while finished_cnt < config.AGENTS:
+		s, a, r, s_, y, flag, info = agent.step()
+		finished = flag == 0.		# episode finished
+
+		finished_s.append( compress(s, finished) )
+		finished_y.append( y[finished] )
+		finished_cnt += np.sum(finished)
+
+	loss = net.train(flatten(finished_s), flatten(finished_y))
+
+	finished_cnt = 0
+	finished_s = []
+	finished_y = []
+
+	sys.stdout.write('.')
+	sys.stdout.flush()
+
 	if utils.is_time(ep_steps, config.EPOCH_STEPS):
 		with torch.no_grad():
 			fps_ = fps.fps(ep_steps)
@@ -106,8 +137,25 @@ for ep_steps in range(1, config.TRAINING_EPOCHS):
 
 			net.save(config.MODEL_FILE)
 
-	if utils.is_time(ep_steps, config.EPOCH_STEPS * 10):
-		set_lr(ep_steps)
+		log = {
+			'trn_acc': trn_acc,
+			'val_acc': val_acc,
+			'tst_acc': tst_acc,
+
+			'trn_fc': trn_fc,
+			'val_fc': val_fc,
+			'tst_fc': tst_fc,
+
+			'rate': fps_,
+			'loss': loss,
+			# 'grad_norm': grad_norm,
+			
+			'lr': lr,
+		}
+		wandb.log(log)
+
+	if utils.is_time(ep_steps, config.LR_SCHEDULE):
+		lr = set_lr(ep_steps)
 
 	# if utils.is_time(epoch, config.EPOCH_STEPS):
 	# 	with torch.no_grad():
@@ -139,23 +187,5 @@ for ep_steps in range(1, config.TRAINING_EPOCHS):
 	# 		print(f"Epoch {epoch}: acc (trn/val/tst): {trn_acc:.4f}/{val_acc:.4f}/{tst_acc:.4f}, FPS: {fps_:.2f} {impr}")
 	# 		print(f"{trn_acc:.4f} {val_acc:.4f} {tst_acc:.4f}", file=log_file, flush=True)
 
-	while finished_cnt < config.AGENTS:
-		s, a, r, s_, y, flag, info = agent.step()
-		finished = flag == 0.		# episode finished
-
-		finished_s.append( compress(s, finished) )
-		finished_y.append( y[finished] )
-		finished_cnt += np.sum(finished)
-
-	net.train(flatten(finished_s), flatten(finished_y))
-
-	finished_cnt = 0
-	finished_s = []
-	finished_y = []
-
-	sys.stdout.write('.')
-	sys.stdout.flush()
-
-		# TODO finish the evaluation!
 
 

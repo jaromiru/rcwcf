@@ -1,6 +1,11 @@
-bar_chart = function(data, true_y) {
-  // set the dimensions and margins of the graph
-  var margin = {top: 5, right: 20, bottom: 40, left: 40},
+bar_chart = function(data, true_y, class_labels) {
+  let best_y = data.indexOf(Math.max(...data)); 
+  class_labels = [...class_labels] // copy
+
+  class_labels[true_y] = "•".concat(class_labels[true_y])
+
+    // set the dimensions and margins of the graph
+  var margin = {top: 5, right: 20, bottom: 40, left: 42},
       width = 90 - margin.left - margin.right,
       height = 80 - margin.top - margin.bottom;
 
@@ -16,48 +21,57 @@ bar_chart = function(data, true_y) {
             "translate(" + margin.left + "," + (margin.top + 330) + ")");
 
 
-    // Add X axis
-    var max_p = Math.max(...data);
-    var max_shown = max_p >= 0.6 ? 1.0 : 0.6;
-    var tick_values = max_p >= 0.6 ? [0., 1.0] : [0., 0.6];
+  // Add X axis
+  var max_p = Math.max(...data);
+  var max_shown = max_p >= 0.6 ? 1.0 : 0.6;
+  var tick_values = max_p >= 0.6 ? [0., 1.0] : [0., 0.6];
 
-    var x = d3.scaleLinear()
-      .domain([0, max_shown])
-      .range([ 0, width]);
+  var x = d3.scaleLinear()
+    .domain([0, max_shown])
+    .range([ 0, width]);
 
-    // Y axis
-    var y = d3.scaleBand()
-      .range([ 0, height ])
-      .domain(d3.range(data.length))
-      .padding(.1);
-
-
-    //Bars
-    svg_group.selectAll("myRect")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("x", x(0) )
-      .attr("y", (d, i) => y(i))
-      .attr("width", d => x(d))
-      .attr("height", y.bandwidth() )
-      .attr("fill", (d, i) => true_y == i ? "black" : "gray")
-
-    svg_group.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).tickValues(tick_values).tickFormat(d3.format(".1f")))
-      .attr("font-size", null)
-      .attr("font-family", null)
+  // Y axis
+  var y = d3.scaleBand()
+    .range([ 0, height ])
+    .domain(d3.range(data.length))
+    .padding(.1);
 
 
-    svg_group.append("g")
-      .call(d3.axisLeft(y).tickFormat(i => (data.length > 4 ? "" : "cls_" + i)).tickSizeOuter(0))
-      .attr("font-size", null)
-      .attr("font-family", null)
+  //Bars
+  svg_group.selectAll("myRect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x", x(0) )
+    .attr("y", (d, i) => y(i))
+    .attr("width", d => x(d))
+    .attr("height", y.bandwidth() )
+    .attr("fill", "gray")
+    // .attr("fill", (d, i) => true_y == i ? "black" : "gray")
 
-    svg_group.append("text")
-      .attr("transform", `translate(35 , ${height })`)
-      .text("P(cls)");
+  svg_group.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).tickValues(tick_values).tickFormat(d3.format(".1f")))
+    .attr("font-size", null)
+    .attr("font-family", null)
+
+
+  y_axis = svg_group.append("g")
+    .call(d3.axisLeft(y).tickFormat(i => (data.length > 4 ? "" : class_labels[i])).tickSizeOuter(0))
+    // .attr("font-size", console.log('x'))
+    // .attr("font-family", null)
+
+  // y_axis.enter()
+    // .attr("text", (d, i) => console.log(i))
+
+  y_axis.selectAll("text")
+    .each(function(i) {
+      d3.select(this).attr("font-weight", i == best_y ? "bold" : "normal")
+    })
+
+  svg_group.append("text")
+    .attr("transform", `translate(35 , ${height })`)
+    .text("P(cls)");
 
   return svg_group.node()
 }

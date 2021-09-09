@@ -270,8 +270,10 @@ def load_data(data_file, meta_file):
 
 def split(data, data_seed):
 	shuffle_idx = np.arange(len(data))
-	random.shuffle(shuffle_idx, random.Random(data_seed).random)
-	data = np.array(data)[shuffle_idx]
+
+	if data_seed != 0:
+		random.shuffle(shuffle_idx, random.Random(data_seed).random)
+		data = np.array(data)[shuffle_idx]
 
 	data_tst = data[:config.TEST_SAMPLES]
 	data_val = data[config.TEST_SAMPLES:config.TEST_SAMPLES+config.VAL_SAMPLES]

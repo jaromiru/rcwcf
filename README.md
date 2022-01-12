@@ -9,15 +9,15 @@ In the code folder, there are three algorithms *rl* (the main agent), *rw* (rand
 In each directory, the main.py is the main script.
 Run `agent_rl` as:
 `python main.py [dataset] [target lambda]`
-i.e. `python main.py carc 0.001`
+i.e. `python main.py recipes 0.001`
 
 Run `agent_rw` as:
 `python main.py [dataset] [target budget]`
-i.e. `python main.py carc 5.0`
+i.e. `python main.py recipes 5.0`
 
 Run `agent_mil` as:
 `python main.py [dataset]`
-i.e. `python main.py carc`
+i.e. `python main.py recipes`
 
 Note that `toy_b` dataset needs to be run with an additional argument `-dataseed 0`.
 

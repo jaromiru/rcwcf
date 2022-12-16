@@ -459,7 +459,8 @@ class Net(torch.nn.Module):
 		v_target = y_correct * config.REWARD_CORRECT + (1. - y_correct) * config.REWARD_INCORRECT
 		loss_v = torch.mean( (v - v_target) ** 2 )
 
-		loss = config.W_CLS * loss_cls + config.W_V * loss_v
+		# loss = config.W_CLS * loss_cls + config.W_V * loss_v # NOTE: disabled v pretraining
+		loss = config.W_CLS * loss_cls
 
 		self.opt.zero_grad()
 		loss.backward()

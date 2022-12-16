@@ -1,8 +1,9 @@
-This is the code used to create results for paper *Hierarchical Multiple-Instance Data Classification with Costly Features* (https://arxiv.org/abs/1911.08756). 
+This is the code used to create results for paper *Classification with Costly Features in Hierarchical Deep Sets*.
 
 Directory structured as follows:
 - `code`: contains the code and datasets
 - `vis_tool`: javascript tool to visualize the agent's behavior
+- `experiments`: scripts to perform the experiments and produce the plots
 
 In the code folder, there are three algorithms *rl* (the main agent), *rw* (random sampling), and *mil* (the hmil agent with all information) in their corresponding directories. The `data` folder contains preprocessed datasets.
 

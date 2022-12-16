@@ -79,9 +79,10 @@ def a_to_str(actions, meta):
 # 	)]
 # }
 def augment_mask_probs(sample, state, probs, meta):
-	for prop, value in sample.items():
+	for prop, value in list(sample.items()):
 			if prop not in meta.feat_labels:
 				print("skipping", prop)
+				del sample[prop]
 				continue
 
 			fid = meta.feat_labels.index(prop)

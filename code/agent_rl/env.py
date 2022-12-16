@@ -118,6 +118,8 @@ class Env:
 		self.meta = meta
 
 	def reset(self):
+		self.tot_cost = np.zeros(config.AGENTS, dtype=np.float32)	
+
 		self.x  = random.choices(self.data, k=config.AGENTS)
 		self.x_ = [ItemMask(it, self.meta) for it in self.x]
 
@@ -132,6 +134,7 @@ class Env:
 	def step(self, actions):
 		r 	 = np.zeros(config.AGENTS, dtype=np.float32)	
 		raw_cost = np.zeros(config.AGENTS, dtype=np.float32)	
+		tot_cost = np.zeros(config.AGENTS, dtype=np.float32)	
 		flag = np.ones(config.AGENTS, dtype=np.float32)		# non-termination flag
 		old_y = [x.label for x in self.x]
 		sel_y = np.zeros(config.AGENTS, dtype=np.int32)
@@ -148,6 +151,8 @@ class Env:
 				self.x[i], self.x_[i] = self._generate_sample()
 				flag[i] = 0.0
 
+				tot_cost[i] = self.tot_cost[i]
+				self.tot_cost[i] = 0
 			else:
 				ag_a = [x[0] for x in actions[i]]
 				ag_a[0] = (0, ag_a[0][1] - 1)
@@ -155,7 +160,10 @@ class Env:
 				raw_cost[i] = self.x_[i].reveal(ag_a, self.meta)
 				r[i] = -config.LAMBDA * raw_cost[i]
 
-		return (self.x_, r, old_y, flag, (raw_cost, sel_y))	# correct would be copy.deepcopy()!
+				self.tot_cost[i] += raw_cost[i]
+				tot_cost[i] = self.tot_cost[i]
+
+		return (self.x_, r, old_y, flag, (raw_cost, sel_y, tot_cost))	# correct would be copy.deepcopy()!
 
 # TODO
 class SeqEnv(Env):
@@ -163,6 +171,8 @@ class SeqEnv(Env):
 		super().__init__(data, meta)
 
 	def reset(self, smp_idx=0):
+		self.tot_cost = np.zeros(config.AGENTS, dtype=np.float32)	
+
 		self.x = []
 		self.x_ = []
 		self.idx = smp_idx

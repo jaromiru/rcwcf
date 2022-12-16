@@ -84,7 +84,7 @@ def process_bag(bag, meta):
 
 			m_prop = meta[prop]
 			i_prop = item[prop]
-			
+
 			if m_prop['type'] in ['binary', 'float']:
 				feats.append(i_prop)
 

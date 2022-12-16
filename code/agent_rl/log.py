@@ -32,9 +32,12 @@ class Log:
 		true_y = []
 		pred_y = []
 
+		fc_log = []
+
 		while True:
 			s, a, r, s_, y, full_p, flag, info = agent.step()
 			raw_cost = info[0]
+			tot_cost = info[2]
 
 			if np.all(flag == -1):
 				break
@@ -46,6 +49,7 @@ class Log:
 			_fc   += np.sum(raw_cost[~finished])
 			_corr += np.sum(r[finished] == config.REWARD_CORRECT)
 			_tot  += np.sum(finished)
+			fc_log.extend(tot_cost[finished])
 
 			# print(f"Evaluated ({self.name}): {_tot}/{len(self.data)}", end='\r')				
 
@@ -62,12 +66,16 @@ class Log:
 		_fc /= _tot
 		_corr /= _tot
 
+		fc_hist = np.histogram(fc_log, bins=np.arange(np.max(fc_log)+2))
+
 		print(f"Metrics ({self.name}):")
 		print("R2:", metrics.r2_score(true_y, pred_y))
 		print(metrics.classification_report(true_y, pred_y))
 		print()
+		print(f"r: {_r:.3f}, fc: {_fc:.3f}, acc: {_corr:.3f}")
+		print()
+		print(fc_hist)
 
-		# print("r: {:.3f}, acc: {:.3f}".format(_r, _corr))
 		return _r, _fc, _corr
 
 	def info(self):
